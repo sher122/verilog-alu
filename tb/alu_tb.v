@@ -51,6 +51,23 @@ module alu_tb;
         #10;
         $display("XOR = %b", result);
 
+                // NOT
+        opcode = 3'b101;
+        #10;
+        $display("NOT A: %b", result);
+
+        // Shift Left
+        A = 4'b0011;
+        opcode = 3'b110;
+        #10;
+        $display("SHL  : %b", result);
+
+        // Shift Right
+        A = 4'b1100;
+        opcode = 3'b111;
+        #10;
+        $display("SHR  : %b", result);
+
         $finish;
 
     end
