@@ -1,16 +1,18 @@
 module alu_tb;
 
-reg [3:0] A;
-reg [3:0] B;
+parameter WIDTH = 8;
+
+reg [WIDTH-1:0] A;
+reg [WIDTH-1:0] B;
 reg [2:0] opcode;
 
-wire [3:0] result;
+wire [WIDTH-1:0] result;
 wire carry;
 wire zero;
 wire negative;
 wire overflow;
 
-alu uut(
+alu #(WIDTH) uut (
 
     .A(A),
     .B(B),
@@ -26,92 +28,70 @@ alu uut(
 
 initial begin
 
-//--------------------------------------------------
-$display("\n===== ADD =====");
+$display("===== 8-BIT ALU TEST =====");
 
-A=7;
-B=5;
+// ADD
+A=8'd25;
+B=8'd17;
 opcode=3'b000;
 #10;
 
-$display("Result=%d Carry=%b Zero=%b Neg=%b Ovf=%b",
-result,carry,zero,negative,overflow);
+$display("ADD Result=%d",result);
 
-//--------------------------------------------------
-$display("\n===== SUB =====");
-
-A=7;
-B=5;
+// SUB
 opcode=3'b001;
 #10;
 
-$display("Result=%d Carry=%b Zero=%b Neg=%b Ovf=%b",
-result,carry,zero,negative,overflow);
+$display("SUB Result=%d",result);
 
-//--------------------------------------------------
-$display("\n===== AND =====");
-
-A=4'b1100;
-B=4'b1010;
+// AND
+A=8'b11001100;
+B=8'b10101010;
 opcode=3'b010;
 #10;
 
-$display("Result=%b",result);
+$display("AND Result=%b",result);
 
-//--------------------------------------------------
-$display("\n===== OR =====");
-
+// OR
 opcode=3'b011;
 #10;
 
-$display("Result=%b",result);
+$display("OR Result=%b",result);
 
-//--------------------------------------------------
-$display("\n===== XOR =====");
-
+// XOR
 opcode=3'b100;
 #10;
 
-$display("Result=%b",result);
+$display("XOR Result=%b",result);
 
-//--------------------------------------------------
-$display("\n===== NOT =====");
-
+// NOT
 opcode=3'b101;
 #10;
 
-$display("Result=%b",result);
+$display("NOT Result=%b",result);
 
-//--------------------------------------------------
-$display("\n===== SHIFT LEFT =====");
-
-A=4'b0011;
+// SHL
+A=8'b00001111;
 opcode=3'b110;
 #10;
 
-$display("Result=%b",result);
+$display("SHL Result=%b",result);
 
-//--------------------------------------------------
-$display("\n===== SHIFT RIGHT =====");
-
-A=4'b1100;
+// SHR
+A=8'b11110000;
 opcode=3'b111;
 #10;
 
-$display("Result=%b",result);
+$display("SHR Result=%b",result);
 
-//--------------------------------------------------
-$display("\n===== OVERFLOW TEST =====");
+// Overflow Test
 
-A=4'b0111;
-B=4'b0001;
+A=8'b01111111;
+B=8'b00000001;
 opcode=3'b000;
 #10;
 
-$display("Result=%b Carry=%b Zero=%b Neg=%b Ovf=%b",
-result,carry,zero,negative,overflow);
-
-//--------------------------------------------------
+$display("Overflow=%b",overflow);
 
 $finish;
 

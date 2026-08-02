@@ -1,48 +1,50 @@
-module alu(
-    input [3:0] A,
-    input [3:0] B,
+module alu #(parameter WIDTH = 4)(
+
+    input [WIDTH-1:0] A,
+    input [WIDTH-1:0] B,
     input [2:0] opcode,
 
-    output reg [3:0] result,
+    output reg [WIDTH-1:0] result,
     output reg carry,
     output reg zero,
     output reg negative,
     output reg overflow
+
 );
 
-reg [4:0] temp;
+reg [WIDTH:0] temp;
 
 always @(*) begin
 
-    result = 4'b0000;
+    result = 0;
     carry = 0;
     zero = 0;
     negative = 0;
     overflow = 0;
-    temp = 5'b00000;
+    temp = 0;
 
     case(opcode)
 
         // ADD
         3'b000: begin
             temp = A + B;
-            result = temp[3:0];
-            carry = temp[4];
+            result = temp[WIDTH-1:0];
+            carry = temp[WIDTH];
 
             overflow =
-                (~A[3] & ~B[3] & result[3]) |
-                ( A[3] &  B[3] & ~result[3]);
+                (~A[WIDTH-1] & ~B[WIDTH-1] & result[WIDTH-1]) |
+                ( A[WIDTH-1] &  B[WIDTH-1] & ~result[WIDTH-1]);
         end
 
         // SUB
         3'b001: begin
             temp = A - B;
-            result = temp[3:0];
-            carry = temp[4];
+            result = temp[WIDTH-1:0];
+            carry = temp[WIDTH];
 
             overflow =
-                (~A[3] & B[3] & result[3]) |
-                ( A[3] & ~B[3] & ~result[3]);
+                (~A[WIDTH-1] & B[WIDTH-1] & result[WIDTH-1]) |
+                ( A[WIDTH-1] & ~B[WIDTH-1] & ~result[WIDTH-1]);
         end
 
         // AND
@@ -61,21 +63,21 @@ always @(*) begin
         3'b101:
             result = ~A;
 
-        // Shift Left
+        // SHIFT LEFT
         3'b110:
             result = A << 1;
 
-        // Shift Right
+        // SHIFT RIGHT
         3'b111:
             result = A >> 1;
 
         default:
-            result = 4'b0000;
+            result = 0;
 
     endcase
 
-    zero = (result == 4'b0000);
-    negative = result[3];
+    zero = (result == 0);
+    negative = result[WIDTH-1];
 
 end
 
