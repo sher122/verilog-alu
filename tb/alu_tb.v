@@ -27,7 +27,8 @@ alu #(WIDTH) uut (
 );
 
 initial begin
-
+$dumpfile("sim/alu.vcd");
+$dumpvars(0, alu_tb);
 $display("===== 8-BIT ALU TEST =====");
 
 // ADD
