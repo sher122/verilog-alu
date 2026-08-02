@@ -1,9 +1,24 @@
 module alu(
     input [3:0] A,
     input [3:0] B,
-    output [3:0] SUM
+    input [2:0] opcode,
+
+    output reg [3:0] result
 );
 
-assign SUM = A + B;
+always @(*) begin
+    case(opcode)
+
+        3'b000:
+            result = A + B;
+
+        3'b001:
+            result = A - B;
+
+        default:
+            result = 4'b0000;
+
+    endcase
+end
 
 endmodule
