@@ -6,18 +6,19 @@ module alu(
     output reg [3:0] result,
     output reg carry,
     output reg zero,
-    output reg negative
+    output reg negative,
+    output reg overflow
 );
 
 reg [4:0] temp;
 
 always @(*) begin
 
-    // Default values
     result = 4'b0000;
-    carry = 1'b0;
-    zero = 1'b0;
-    negative = 1'b0;
+    carry = 0;
+    zero = 0;
+    negative = 0;
+    overflow = 0;
     temp = 5'b00000;
 
     case(opcode)
@@ -27,6 +28,10 @@ always @(*) begin
             temp = A + B;
             result = temp[3:0];
             carry = temp[4];
+
+            overflow =
+                (~A[3] & ~B[3] & result[3]) |
+                ( A[3] &  B[3] & ~result[3]);
         end
 
         // SUB
@@ -34,6 +39,10 @@ always @(*) begin
             temp = A - B;
             result = temp[3:0];
             carry = temp[4];
+
+            overflow =
+                (~A[3] & B[3] & result[3]) |
+                ( A[3] & ~B[3] & ~result[3]);
         end
 
         // AND
@@ -65,7 +74,6 @@ always @(*) begin
 
     endcase
 
-    // Status Flags
     zero = (result == 4'b0000);
     negative = result[3];
 

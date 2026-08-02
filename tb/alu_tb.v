@@ -1,108 +1,120 @@
 module alu_tb;
 
-    reg [3:0] A;
-    reg [3:0] B;
-    reg [2:0] opcode;
+reg [3:0] A;
+reg [3:0] B;
+reg [2:0] opcode;
 
-    wire [3:0] result;
-    wire carry;
-    wire zero;
-    wire negative;
+wire [3:0] result;
+wire carry;
+wire zero;
+wire negative;
+wire overflow;
 
-    alu uut(
-        .A(A),
-        .B(B),
-        .opcode(opcode),
-        .result(result),
-        .carry(carry),
-        .zero(zero),
-        .negative(negative)
-    );
+alu uut(
 
-    initial begin
+    .A(A),
+    .B(B),
+    .opcode(opcode),
 
-        // ---------------- ADD ----------------
-        A = 4'd7;
-        B = 4'd5;
-        opcode = 3'b000;
-        #10;
-        $display("ADD");
-        $display("Result=%d Carry=%b Zero=%b Negative=%b",
-                 result, carry, zero, negative);
+    .result(result),
+    .carry(carry),
+    .zero(zero),
+    .negative(negative),
+    .overflow(overflow)
 
-        // ---------------- SUB ----------------
-        opcode = 3'b001;
-        #10;
-        $display("SUB");
-        $display("Result=%d Carry=%b Zero=%b Negative=%b",
-                 result, carry, zero, negative);
+);
 
-        // ---------------- AND ----------------
-        A = 4'b1100;
-        B = 4'b1010;
-        opcode = 3'b010;
-        #10;
-        $display("AND");
-        $display("Result=%b Carry=%b Zero=%b Negative=%b",
-                 result, carry, zero, negative);
+initial begin
 
-        // ---------------- OR -----------------
-        opcode = 3'b011;
-        #10;
-        $display("OR");
-        $display("Result=%b Carry=%b Zero=%b Negative=%b",
-                 result, carry, zero, negative);
+//--------------------------------------------------
+$display("\n===== ADD =====");
 
-        // ---------------- XOR ----------------
-        opcode = 3'b100;
-        #10;
-        $display("XOR");
-        $display("Result=%b Carry=%b Zero=%b Negative=%b",
-                 result, carry, zero, negative);
+A=7;
+B=5;
+opcode=3'b000;
+#10;
 
-        // ---------------- NOT ----------------
-        opcode = 3'b101;
-        #10;
-        $display("NOT");
-        $display("Result=%b Carry=%b Zero=%b Negative=%b",
-                 result, carry, zero, negative);
+$display("Result=%d Carry=%b Zero=%b Neg=%b Ovf=%b",
+result,carry,zero,negative,overflow);
 
-        // ------------ SHIFT LEFT -------------
-        A = 4'b0011;
-        opcode = 3'b110;
-        #10;
-        $display("SHIFT LEFT");
-        $display("Result=%b Carry=%b Zero=%b Negative=%b",
-                 result, carry, zero, negative);
+//--------------------------------------------------
+$display("\n===== SUB =====");
 
-        // ------------ SHIFT RIGHT ------------
-        A = 4'b1100;
-        opcode = 3'b111;
-        #10;
-        $display("SHIFT RIGHT");
-        $display("Result=%b Carry=%b Zero=%b Negative=%b",
-                 result, carry, zero, negative);
+A=7;
+B=5;
+opcode=3'b001;
+#10;
 
-        // ------------ ZERO FLAG --------------
-        A = 4'd5;
-        B = 4'd5;
-        opcode = 3'b001;
-        #10;
-        $display("ZERO FLAG TEST");
-        $display("Result=%d Carry=%b Zero=%b Negative=%b",
-                 result, carry, zero, negative);
+$display("Result=%d Carry=%b Zero=%b Neg=%b Ovf=%b",
+result,carry,zero,negative,overflow);
 
-        // ------------ CARRY FLAG -------------
-        A = 4'b1111;
-        B = 4'b0001;
-        opcode = 3'b000;
-        #10;
-        $display("CARRY FLAG TEST");
-        $display("Result=%b Carry=%b Zero=%b Negative=%b",
-                 result, carry, zero, negative);
+//--------------------------------------------------
+$display("\n===== AND =====");
 
-        $finish;
+A=4'b1100;
+B=4'b1010;
+opcode=3'b010;
+#10;
 
-    end
+$display("Result=%b",result);
+
+//--------------------------------------------------
+$display("\n===== OR =====");
+
+opcode=3'b011;
+#10;
+
+$display("Result=%b",result);
+
+//--------------------------------------------------
+$display("\n===== XOR =====");
+
+opcode=3'b100;
+#10;
+
+$display("Result=%b",result);
+
+//--------------------------------------------------
+$display("\n===== NOT =====");
+
+opcode=3'b101;
+#10;
+
+$display("Result=%b",result);
+
+//--------------------------------------------------
+$display("\n===== SHIFT LEFT =====");
+
+A=4'b0011;
+opcode=3'b110;
+#10;
+
+$display("Result=%b",result);
+
+//--------------------------------------------------
+$display("\n===== SHIFT RIGHT =====");
+
+A=4'b1100;
+opcode=3'b111;
+#10;
+
+$display("Result=%b",result);
+
+//--------------------------------------------------
+$display("\n===== OVERFLOW TEST =====");
+
+A=4'b0111;
+B=4'b0001;
+opcode=3'b000;
+#10;
+
+$display("Result=%b Carry=%b Zero=%b Neg=%b Ovf=%b",
+result,carry,zero,negative,overflow);
+
+//--------------------------------------------------
+
+$finish;
+
+end
 
 endmodule
