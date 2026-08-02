@@ -27,74 +27,118 @@ alu #(WIDTH) uut (
 );
 
 initial begin
-$dumpfile("sim/alu.vcd");
-$dumpvars(0, alu_tb);
-$display("===== 8-BIT ALU TEST =====");
 
-// ADD
-A=8'd25;
-B=8'd17;
-opcode=3'b000;
-#10;
+    // Generate waveform
+    $dumpfile("sim/alu.vcd");
+    $dumpvars(0, alu_tb);
 
-$display("ADD Result=%d",result);
+    $display("\n==============================");
+    $display("SELF CHECKING TESTBENCH");
+    $display("==============================\n");
 
-// SUB
-opcode=3'b001;
-#10;
+    //---------------- ADD ----------------
 
-$display("SUB Result=%d",result);
+    A = 8'd25;
+    B = 8'd17;
+    opcode = 3'b000;
+    #10;
 
-// AND
-A=8'b11001100;
-B=8'b10101010;
-opcode=3'b010;
-#10;
+    if(result == 42)
+        $display("ADD Test ........ PASS");
+    else
+        $display("ADD Test ........ FAIL");
 
-$display("AND Result=%b",result);
+    //---------------- SUB ----------------
 
-// OR
-opcode=3'b011;
-#10;
+    opcode = 3'b001;
+    #10;
 
-$display("OR Result=%b",result);
+    if(result == 8)
+        $display("SUB Test ........ PASS");
+    else
+        $display("SUB Test ........ FAIL");
 
-// XOR
-opcode=3'b100;
-#10;
+    //---------------- AND ----------------
 
-$display("XOR Result=%b",result);
+    A = 8'b11001100;
+    B = 8'b10101010;
+    opcode = 3'b010;
+    #10;
 
-// NOT
-opcode=3'b101;
-#10;
+    if(result == 8'b10001000)
+        $display("AND Test ........ PASS");
+    else
+        $display("AND Test ........ FAIL");
 
-$display("NOT Result=%b",result);
+    //---------------- OR ----------------
 
-// SHL
-A=8'b00001111;
-opcode=3'b110;
-#10;
+    opcode = 3'b011;
+    #10;
 
-$display("SHL Result=%b",result);
+    if(result == 8'b11101110)
+        $display("OR Test ......... PASS");
+    else
+        $display("OR Test ......... FAIL");
 
-// SHR
-A=8'b11110000;
-opcode=3'b111;
-#10;
+    //---------------- XOR ----------------
 
-$display("SHR Result=%b",result);
+    opcode = 3'b100;
+    #10;
 
-// Overflow Test
+    if(result == 8'b01100110)
+        $display("XOR Test ........ PASS");
+    else
+        $display("XOR Test ........ FAIL");
 
-A=8'b01111111;
-B=8'b00000001;
-opcode=3'b000;
-#10;
+    //---------------- NOT ----------------
 
-$display("Overflow=%b",overflow);
+    opcode = 3'b101;
+    #10;
 
-$finish;
+    if(result == 8'b00110011)
+        $display("NOT Test ........ PASS");
+    else
+        $display("NOT Test ........ FAIL");
+
+    //---------------- SHIFT LEFT ----------------
+
+    A = 8'b00001111;
+    opcode = 3'b110;
+    #10;
+
+    if(result == 8'b00011110)
+        $display("SHL Test ........ PASS");
+    else
+        $display("SHL Test ........ FAIL");
+
+    //---------------- SHIFT RIGHT ----------------
+
+    A = 8'b11110000;
+    opcode = 3'b111;
+    #10;
+
+    if(result == 8'b01111000)
+        $display("SHR Test ........ PASS");
+    else
+        $display("SHR Test ........ FAIL");
+
+    //---------------- OVERFLOW ----------------
+
+    A = 8'b01111111;
+    B = 8'b00000001;
+    opcode = 3'b000;
+    #10;
+
+    if(overflow)
+        $display("Overflow Test ... PASS");
+    else
+        $display("Overflow Test ... FAIL");
+
+    $display("\n==============================");
+    $display("All tests completed.");
+    $display("==============================");
+
+    $finish;
 
 end
 
