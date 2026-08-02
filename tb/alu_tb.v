@@ -16,60 +16,53 @@ module alu_tb;
 
     initial begin
 
-        // Test ADD
-        A = 4'd7;
-        B = 4'd5;
-        opcode = 3'b000;
-        #10;
-        $display("ADD: %d + %d = %d", A, B, result);
+      // ---------------- ADD ----------------
+    A = 4'd7;
+    B = 4'd5;
+    opcode = 3'b000;
+    #10;
+    $display("ADD : %d + %d = %d", A, B, result);
 
-        // Test SUB
-        A = 4'd7;
-        B = 4'd5;
-        opcode = 3'b001;
-        #10;
-        $display("SUB: %d - %d = %d", A, B, result);
+    // ---------------- SUB ----------------
+    opcode = 3'b001;
+    #10;
+    $display("SUB : %d - %d = %d", A, B, result);
 
-        // AND
-        A = 4'b1100;
-        B = 4'b1010;
-        opcode = 3'b010;
-        #10;
-        $display("AND = %b", result);
+    // ---------------- AND ----------------
+    A = 4'b1100;
+    B = 4'b1010;
+    opcode = 3'b010;
+    #10;
+    $display("AND : %b", result);
 
-        // OR
-        A = 4'b1100;
-        B = 4'b1010;
-        opcode = 3'b011;
-        #10;
-        $display("OR  = %b", result);
+    // ---------------- OR -----------------
+    opcode = 3'b011;
+    #10;
+    $display("OR  : %b", result);
 
-        // XOR
-        A = 4'b1100;
-        B = 4'b1010;
-        opcode = 3'b100;
-        #10;
-        $display("XOR = %b", result);
+    // ---------------- XOR ----------------
+    opcode = 3'b100;
+    #10;
+    $display("XOR : %b", result);
 
-                // NOT
-        opcode = 3'b101;
-        #10;
-        $display("NOT A: %b", result);
+    // ---------------- NOT ----------------
+    opcode = 3'b101;
+    #10;
+    $display("NOT : %b", result);
 
-        // Shift Left
-        A = 4'b0011;
-        opcode = 3'b110;
-        #10;
-        $display("SHL  : %b", result);
+    // ------------ SHIFT LEFT -------------
+    A = 4'b0011;
+    opcode = 3'b110;
+    #10;
+    $display("SHL : %b", result);
 
-        // Shift Right
-        A = 4'b1100;
-        opcode = 3'b111;
-        #10;
-        $display("SHR  : %b", result);
+    // ------------ SHIFT RIGHT ------------
+    A = 4'b1100;
+    opcode = 3'b111;
+    #10;
+    $display("SHR : %b", result);
 
-        $finish;
-
+    $finish;
     end
 
 endmodule
